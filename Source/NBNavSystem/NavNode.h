@@ -34,12 +34,17 @@ class NBNAVSYSTEM_API UNavNode : public UObject
 {
 	GENERATED_BODY()
 private:
-	static UNavNode* nullNode;
+	//static UNavNode* nullNode;
 	bool isNullBool;
 public:
-	//Returns a custom Null object
+	/*
+	* @return a custom Null object
+	*/
 	static UNavNode* Null();
 
+	/*
+	* @return if this object is a null object
+	*/
 	UFUNCTION(BlueprintCallable)
 	bool IsNull();
 

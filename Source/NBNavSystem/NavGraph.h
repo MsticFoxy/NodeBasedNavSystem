@@ -50,16 +50,35 @@ public:
 
 	UNavGraphRow* operator [](int i);
 
+	/* 
+	* Sets the node at index [x][y]. Adds null nodes if the graph is too small
+	* @param x defines the row in which the node is set
+	* @param y defines the index in which the node is set
+	* @param node the node that is going to replace the old node at the index [x][y]
+	*/
 	UFUNCTION(BlueprintCallable)
 	void Set(int x, int y, UNavNode* node);
+
+	/*
+	* @return the number of nodes excluding nullptr
+	*/
 	UFUNCTION(BlueprintCallable)
 	int ValidNum();
+	/*
+	* @return the number of nodes including nullptr
+	*/
 	UFUNCTION(BlueprintCallable)
 	int Num();
 
-	UPROPERTY(BlueprintAssignable)
-	FGraphChangedDelegate OnGraphChanged;
-
+	/*
+	* @return TArray of node locations and if it is a null node
+	*/
 	UFUNCTION(BlueprintCallable)
 	TArray<FNodeVis> GetGraphVisualisation();
+
+
+// Delegates
+public:
+	UPROPERTY(BlueprintAssignable)
+	FGraphChangedDelegate OnGraphChanged;
 };

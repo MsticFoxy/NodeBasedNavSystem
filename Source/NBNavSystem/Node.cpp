@@ -3,7 +3,7 @@
 
 #include "NavNode.h"
 
-UNavNode* UNavNode::nullNode;
+//UNavNode* UNavNode::nullNode;
 
 UNavNode* UNavNode::Null()
 {

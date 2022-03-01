@@ -26,15 +26,31 @@ public:
 	
 	UNavNode* operator [](int i);
 
+	/*
+	* Sets the node at index [i] in this row. Adds null nodes if the graph is too small
+	*/
 	UFUNCTION(BlueprintCallable)
 	void Set(int i, UNavNode* node);
+
+	/*
+	* @return the number of nodes excluding nullptr
+	*/
 	UFUNCTION(BlueprintCallable)
 	int ValidNum();
+
+	/*
+	* @return the number of nodes including nullptr
+	*/
 	UFUNCTION(BlueprintCallable)
 	int Num();
+
+	/*
+	* @return if the row is empty
+	*/
 	UFUNCTION(BlueprintCallable)
 	bool IsEmpty();
 
-	friend class ANavGraph;
 
+public:
+	friend class ANavGraph;
 };
