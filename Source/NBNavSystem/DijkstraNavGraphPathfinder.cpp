@@ -26,4 +26,11 @@ void UDijkstraNavGraphPathfinder::WeightNodes(UNavNode* origin)
 			}
 		}
 	}*/
+
+	TArray<UNavNode*> visited;
+
+	auto weightSingle = [](UNavNode* node, int prevCost, TArray<UNavNode*>* visited)
+	{
+
+	};
 }

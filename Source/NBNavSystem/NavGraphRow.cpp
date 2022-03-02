@@ -11,7 +11,7 @@ UNavNode* UNavGraphRow::operator[](int i)
 		{
 			return posNodes[i];
 		}
-		return UNavNode::Null();
+		return nullptr;
 	}
 	else
 	{
@@ -19,9 +19,9 @@ UNavNode* UNavGraphRow::operator[](int i)
 		{
 			return negNodes[(-i)-1];
 		}
-		return UNavNode::Null();
+		return nullptr;
 	}
-	return UNavNode::Null();
+	return nullptr;
 }
 
 void UNavGraphRow::Set(int i, UNavNode* node)

@@ -41,6 +41,10 @@ private:
 
 	int x;
 	int y;
+
+	ANavGraph* parent;
+
+	FNeighborRule neighborRule;
 public:
 	/*
 	* @return a custom Null object
@@ -53,10 +57,39 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool IsNull();
 
+	/*
+	* @return the x coordinate of this node relative to the parent NavGraph
+	*/
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	int X();
+	/*
+	* @return the y coordinate of this node relative to the parent NavGraph
+	*/
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	int Y();
+	/*
+	* @return the parent NavGraph
+	*/
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	ANavGraph* Parent();
+
+	/*
+	* Sets the NeighborRule for this Node
+	*/
+	UFUNCTION(BlueprintCallable)
+	void SetNeighborRule(FNeighborRule rule);
+
+	/*
+	* @return the NeighborRule for this Node
+	*/
+	UFUNCTION(BlueprintCallable)
+	FNeighborRule GetNeighborRule();
+
+	/*
+	* @return all neighbors of this node depending on the NeighborRule excluding Null Nodes
+	*/
+	UFUNCTION(BlueprintCallable)
+	TArray<UNavNode*> GetNeighbors();
 
 	friend class ANavGraph;
 };

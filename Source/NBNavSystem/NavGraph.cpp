@@ -97,6 +97,7 @@ void ANavGraph::Set(int x, int y, UNavNode* node)
 	}
 	node->x = x;
 	node->y = y;
+	node->parent = this;
 	OnGraphChanged.Broadcast();
 }
 
