@@ -20,3 +20,13 @@ bool UNavNode::IsNull()
 {
     return isNullBool;
 }
+
+int UNavNode::X()
+{
+    return x;
+}
+
+int UNavNode::Y()
+{
+    return y;
+}

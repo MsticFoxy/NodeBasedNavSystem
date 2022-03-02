@@ -95,6 +95,8 @@ void ANavGraph::Set(int x, int y, UNavNode* node)
 	{
 		(*sign)[x]->Set(y, node);
 	}
+	node->x = x;
+	node->y = y;
 	OnGraphChanged.Broadcast();
 }
 
@@ -124,6 +126,23 @@ int ANavGraph::Num()
 		n += r->Num();
 	}
 	return n;
+}
+
+TArray<UNavNode*> ANavGraph::GetNodeArray()
+{
+	TArray<UNavNode*> ret;
+	for (UNavGraphRow* r : posRows)
+	{
+		ret.Append(r->posNodes);
+		ret.Append(r->negNodes);
+	}
+	for (UNavGraphRow* r : negRows)
+	{
+		ret.Append(r->posNodes);
+		ret.Append(r->negNodes);
+	}
+	
+	return ret;
 }
 
 FNodeVis::FNodeVis()

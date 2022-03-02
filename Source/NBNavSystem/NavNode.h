@@ -6,6 +6,8 @@
 #include "UObject/NoExportTypes.h"
 #include "NavNode.generated.h"
 
+class ANavGraph;
+
 USTRUCT(BlueprintType)
 struct FNeighCoord
 {
@@ -36,6 +38,9 @@ class NBNAVSYSTEM_API UNavNode : public UObject
 private:
 	//static UNavNode* nullNode;
 	bool isNullBool;
+
+	int x;
+	int y;
 public:
 	/*
 	* @return a custom Null object
@@ -48,4 +53,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool IsNull();
 
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	int X();
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	int Y();
+
+	friend class ANavGraph;
 };

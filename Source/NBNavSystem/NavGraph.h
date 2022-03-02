@@ -60,15 +60,21 @@ public:
 	void Set(int x, int y, UNavNode* node);
 
 	/*
-	* @return the number of nodes excluding nullptr
+	* @return the number of nodes excluding null nodes
 	*/
 	UFUNCTION(BlueprintCallable)
 	int ValidNum();
 	/*
-	* @return the number of nodes including nullptr
+	* @return the number of nodes including null nodes
 	*/
 	UFUNCTION(BlueprintCallable)
 	int Num();
+
+	/*
+	* @return all nodes of the graph including null nodes
+	*/
+	UFUNCTION(BlueprintCallable)
+	TArray<UNavNode*> GetNodeArray();
 
 	/*
 	* @return TArray of node locations and if it is a null node
