@@ -44,7 +44,7 @@ public:
 	* @return the path from the start node to the end node
 	*/
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	TArray<UNavNode*> FindPath(UNavNode* start, UNavNode* end);
+	TArray<ANavNode*> FindPath(ANavNode* start, ANavNode* end);
 
 	/*
 	* Clears bindings and does necissary cleanup

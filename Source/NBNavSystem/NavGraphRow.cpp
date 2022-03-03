@@ -3,7 +3,7 @@
 
 #include "NavGraphRow.h"
 
-UNavNode* UNavGraphRow::operator[](int i)
+ANavNode* ANavGraphRow::operator[](int i)
 {
 	if (i >= 0)
 	{
@@ -24,10 +24,16 @@ UNavNode* UNavGraphRow::operator[](int i)
 	return nullptr;
 }
 
-void UNavGraphRow::Set(int i, UNavNode* node)
+ANavGraphRow::ANavGraphRow()
+{
+	PrimaryActorTick.bCanEverTick = false;
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
+}
+
+void ANavGraphRow::Set(int i, ANavNode* node)
 {
 	// setup for positive or negative array
-	TArray<UNavNode*>* sign;
+	TArray<ANavNode*>* sign;
 	if (i >= 0)
 	{
 		sign = &posNodes;
@@ -42,7 +48,9 @@ void UNavGraphRow::Set(int i, UNavNode* node)
 	{
 		for (int it = sign->Num(); it < i; it++)
 		{
-			sign->Add(UNavNode::Null());
+			ANavNode* nul = ANavNode::Null(node->GetWorld());
+			nul->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
+			sign->Add(nul);
 		}
 		sign->Add(node);
 		validNum++;
@@ -55,7 +63,9 @@ void UNavGraphRow::Set(int i, UNavNode* node)
 		{
 			if ((*sign)[it]->IsNull())
 			{
+				ANavNode* rm = (*sign)[sign->Num() - 1];
 				sign->RemoveAt(sign->Num() - 1);
+				rm->Destroy();
 			}
 			else
 			{
@@ -79,23 +89,25 @@ void UNavGraphRow::Set(int i, UNavNode* node)
 		{
 			return;
 		}
+		ANavNode* rm = (*sign)[i];
 		(*sign).RemoveAt(i);
 		(*sign).EmplaceAt(i, node);
+		rm->Destroy();
 	}
-	
+	node->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
-int UNavGraphRow::ValidNum()
+int ANavGraphRow::ValidNum()
 {
 	return validNum;
 }
 
-int UNavGraphRow::Num()
+int ANavGraphRow::Num()
 {
 	return posNodes.Num() + negNodes.Num();
 }
 
-bool UNavGraphRow::IsEmpty()
+bool ANavGraphRow::IsEmpty()
 {
 	return Num() == 0;
 }

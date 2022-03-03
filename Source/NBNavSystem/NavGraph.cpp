@@ -25,7 +25,7 @@ void ANavGraph::Tick(float DeltaTime)
 
 }
 
-UNavGraphRow* ANavGraph::operator[](int i)
+ANavGraphRow* ANavGraph::operator[](int i)
 {
 	if (i >= 0)
 	{
@@ -46,10 +46,11 @@ UNavGraphRow* ANavGraph::operator[](int i)
 	return nullptr;
 }
 
-void ANavGraph::Set(int x, int y, UNavNode* node)
+void ANavGraph::Set(int x, int y, ANavNode* node)
 {
 	// setup for positive or negative array
-	TArray<UNavGraphRow*>* sign;
+	TArray<ANavGraphRow*>* sign;
+	int space = 1;
 	if (x >= 0)
 	{
 		sign = &posRows;
@@ -58,16 +59,20 @@ void ANavGraph::Set(int x, int y, UNavNode* node)
 	{
 		sign = &negRows;
 		x = (-x) - 1;
+		space = -1;
 	}
 	// add rows if array is too short
 	if (sign->Num() <= x)
 	{
 		for (int it = sign->Num(); it < x; it++)
 		{
-			sign->Add(NewObject<UNavGraphRow>());
+			ANavGraphRow* nr = (ANavGraphRow*)GetWorld()->SpawnActor<ANavGraphRow>(ANavGraphRow::StaticClass(), FTransform());
+			sign->Add(nr);
+			nr->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
 		}
-		UNavGraphRow* nr = NewObject<UNavGraphRow>();
+		ANavGraphRow* nr = (ANavGraphRow*)GetWorld()->SpawnActor<ANavGraphRow>(ANavGraphRow::StaticClass(), FTransform());
 		sign->Add(nr);
+		nr->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
 		nr->Set(y, node);
 	}
 	// remove outer empty rows
@@ -95,20 +100,61 @@ void ANavGraph::Set(int x, int y, UNavNode* node)
 	{
 		(*sign)[x]->Set(y, node);
 	}
-	node->x = x;
+	node->x = x * space;
 	node->y = y;
 	node->parent = this;
+	node->SetActorLocation(FVector(x*100 * space, y*100,0));
 	OnGraphChanged.Broadcast();
+}
+
+void ANavGraph::ClearGraph()
+{
+	TArray<ANavNode*> rm = GetNodeArray();
+	
+	for (int i = rm.Num()-1; i >= 0; i--)
+	{
+		ANavNode* n = rm[i];
+		rm.RemoveAt(i);
+		if (n != nullptr)
+		{
+			n->Destroy();
+		}
+	}
+
+	TArray<ANavGraphRow*> rrm;
+	rrm.Append(posRows);
+	rrm.Append(negRows);
+	posRows.Empty();
+	negRows.Empty();
+	for (int i = rrm.Num() - 1; i >= 0; i--)
+	{
+		ANavGraphRow* n = rrm[i];
+		rrm.RemoveAt(i);
+		if (n != nullptr)
+		{
+			n->Destroy();
+		}
+	}
+}
+
+void ANavGraph::GetBounds(int& boundsX, int& boundsY)
+{
+	boundsX = FMath::Max(posRows.Num(), negRows.Num());
+	for (ANavGraphRow* r : posRows)
+	{
+		int max = FMath::Max(r->posNodes.Num(), r->negNodes.Num());
+		boundsY = FMath::Max(boundsY, max);
+	}
 }
 
 int ANavGraph::ValidNum()
 {
 	int n = 0;
-	for (UNavGraphRow* r : negRows)
+	for (ANavGraphRow* r : negRows)
 	{
 		n += r->ValidNum();
 	}
-	for (UNavGraphRow* r : posRows)
+	for (ANavGraphRow* r : posRows)
 	{
 		n += r->ValidNum();
 	}
@@ -118,26 +164,26 @@ int ANavGraph::ValidNum()
 int ANavGraph::Num()
 {
 	int n = 0;
-	for (UNavGraphRow* r : negRows)
+	for (ANavGraphRow* r : negRows)
 	{
 		n += r->Num();
 	}
-	for (UNavGraphRow* r : posRows)
+	for (ANavGraphRow* r : posRows)
 	{
 		n += r->Num();
 	}
 	return n;
 }
 
-TArray<UNavNode*> ANavGraph::GetNodeArray()
+TArray<ANavNode*> ANavGraph::GetNodeArray()
 {
-	TArray<UNavNode*> ret;
-	for (UNavGraphRow* r : posRows)
+	TArray<ANavNode*> ret;
+	for (ANavGraphRow* r : posRows)
 	{
 		ret.Append(r->posNodes);
 		ret.Append(r->negNodes);
 	}
-	for (UNavGraphRow* r : negRows)
+	for (ANavGraphRow* r : negRows)
 	{
 		ret.Append(r->posNodes);
 		ret.Append(r->negNodes);
@@ -183,4 +229,10 @@ TArray<FNodeVis> ANavGraph::GetGraphVisualisation()
 		}
 	}
 	return ret;
+}
+
+void ANavGraph::Destroyed()
+{
+	Super::Destroyed();
+	ClearGraph();
 }

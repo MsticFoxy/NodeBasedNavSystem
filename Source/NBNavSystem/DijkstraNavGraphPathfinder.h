@@ -15,11 +15,11 @@ class NBNAVSYSTEM_API UDijkstraNavGraphPathfinder : public UNavGraphPathfinder
 {
 	GENERATED_BODY()
 private:
-	TMultiMap<int, UNavNode*> weightNodeMap;
-	TMap<UNavNode*, int> currentWeight;
+	TMultiMap<int, ANavNode*> weightNodeMap;
+	TMap<ANavNode*, int> currentWeight;
 
 public:
 	virtual bool SetupPathfinder_Implementation(ANavGraph* graph) override;
 
-	void WeightNodes(UNavNode* origin);
+	void WeightNodes(ANavNode* origin);
 };

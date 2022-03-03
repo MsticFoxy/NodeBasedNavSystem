@@ -9,9 +9,9 @@ bool UDijkstraNavGraphPathfinder::SetupPathfinder_Implementation(ANavGraph* grap
 	return true;
 }
 
-void UDijkstraNavGraphPathfinder::WeightNodes(UNavNode* origin)
+void UDijkstraNavGraphPathfinder::WeightNodes(ANavNode* origin)
 {
-	TArray<UNavNode*> unvis = navGraph->GetNodeArray();
+	TArray<ANavNode*> unvis = navGraph->GetNodeArray();
 	/*
 	for (int i = unvis.Num()-1; i >= 0; i--)
 	{
@@ -27,9 +27,9 @@ void UDijkstraNavGraphPathfinder::WeightNodes(UNavNode* origin)
 		}
 	}*/
 
-	TArray<UNavNode*> visited;
+	TArray<ANavNode*> visited;
 
-	auto weightSingle = [](UNavNode* node, int prevCost, TArray<UNavNode*>* visited)
+	auto weightSingle = [](ANavNode* node, int prevCost, TArray<ANavNode*>* visited)
 	{
 
 	};

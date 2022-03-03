@@ -6,53 +6,55 @@
 
 //UNavNode* UNavNode::nullNode;
 
-UNavNode* UNavNode::Null()
+ANavNode::ANavNode()
 {
-    /*if (UNavNode::nullNode)
-    {
-        return UNavNode::nullNode;
-    }*/
-    UNavNode* nn = NewObject<UNavNode>();
+    PrimaryActorTick.bCanEverTick = true;
+    RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
+}
+
+ANavNode* ANavNode::Null(UWorld* world)
+{
+    ANavNode* nn = (ANavNode*)world->SpawnActor<ANavNode>(ANavNode::StaticClass(), FTransform());
     nn->isNullBool = true;
     return nn;
 }
 
-bool UNavNode::IsNull()
+bool ANavNode::IsNull()
 {
     return isNullBool;
 }
 
-int UNavNode::X()
+int ANavNode::X()
 {
     return x;
 }
 
-int UNavNode::Y()
+int ANavNode::Y()
 {
     return y;
 }
 
-ANavGraph* UNavNode::Parent()
+ANavGraph* ANavNode::Parent()
 {
     return parent;
 }
 
-void UNavNode::SetNeighborRule(FNeighborRule rule)
+void ANavNode::SetNeighborRule(FNeighborRule rule)
 {
     neighborRule = rule;
 }
 
-FNeighborRule UNavNode::GetNeighborRule()
+FNeighborRule ANavNode::GetNeighborRule()
 {
     return neighborRule;
 }
 
-TArray<UNavNode*> UNavNode::GetNeighbors()
+TArray<ANavNode*> ANavNode::GetNeighbors()
 {
-    TArray<UNavNode*> ret;
+    TArray<ANavNode*> ret;
     for (FNeighCoord c : neighborRule.reach)
     {
-        if (UNavNode* n = (*(*parent)[(x + c.x)])[y + c.y])
+        if (ANavNode* n = (*(*parent)[(x + c.x)])[y + c.y])
         {
             if (!n->IsNull())
             {

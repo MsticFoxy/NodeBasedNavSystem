@@ -40,15 +40,16 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere)
-	TArray<UNavGraphRow*> posRows;
+	TArray<ANavGraphRow*> posRows;
 	UPROPERTY(EditAnywhere)
-	TArray<UNavGraphRow*> negRows;
+	TArray<ANavGraphRow*> negRows;
+
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UNavGraphRow* operator [](int i);
+	ANavGraphRow* operator [](int i);
 
 	/* 
 	* Sets the node at index [x][y]. Adds null nodes if the graph is too small
@@ -57,7 +58,19 @@ public:
 	* @param node the node that is going to replace the old node at the index [x][y]
 	*/
 	UFUNCTION(BlueprintCallable)
-	void Set(int x, int y, UNavNode* node);
+	void Set(int x, int y, ANavNode* node);
+
+	/*
+	* Clears the NavGraph and destroys all nodes of this graph
+	*/
+	UFUNCTION(BlueprintCallable)
+	void ClearGraph();
+
+	/*
+	* provides the bounds of the NavGraph
+	*/
+	UFUNCTION(BlueprintCallable)
+	void GetBounds(int& boundsX, int& boundsY);
 
 	/*
 	* @return the number of nodes excluding null nodes
@@ -74,7 +87,7 @@ public:
 	* @return all nodes of the graph including null nodes
 	*/
 	UFUNCTION(BlueprintCallable)
-	TArray<UNavNode*> GetNodeArray();
+	TArray<ANavNode*> GetNodeArray();
 
 	/*
 	* @return TArray of node locations and if it is a null node
@@ -82,6 +95,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	TArray<FNodeVis> GetGraphVisualisation();
 
+//Overrides
+public:
+	virtual void Destroyed() override;
 
 // Delegates
 public:

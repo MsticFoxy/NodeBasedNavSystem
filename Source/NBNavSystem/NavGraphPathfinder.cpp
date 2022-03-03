@@ -14,9 +14,9 @@ void UNavGraphPathfinder::OnGraphChanged_Implementation()
 {
 }
 
-TArray<UNavNode*> UNavGraphPathfinder::FindPath_Implementation(UNavNode* start, UNavNode* end)
+TArray<ANavNode*> UNavGraphPathfinder::FindPath_Implementation(ANavNode* start, ANavNode* end)
 {
-	return TArray<UNavNode*>();
+	return TArray<ANavNode*>();
 }
 
 void UNavGraphPathfinder::EndPathfinder_Implementation()

@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class NBNAVSYSTEM_API UWeightedNavNode : public UNavNode
+class NBNAVSYSTEM_API AWeightedNavNode : public ANavNode
 {
 	GENERATED_BODY()
 public:

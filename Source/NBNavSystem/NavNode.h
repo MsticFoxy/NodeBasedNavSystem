@@ -32,7 +32,7 @@ public:
  * 
  */
 UCLASS(BlueprintType)
-class NBNAVSYSTEM_API UNavNode : public UObject
+class NBNAVSYSTEM_API ANavNode : public AActor
 {
 	GENERATED_BODY()
 private:
@@ -46,15 +46,18 @@ private:
 
 	FNeighborRule neighborRule;
 public:
+
+	ANavNode();
+
 	/*
 	* @return a custom Null object
 	*/
-	static UNavNode* Null();
+	static ANavNode* Null(UWorld* world);
 
 	/*
 	* @return if this object is a null object
 	*/
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 	bool IsNull();
 
 	/*
@@ -89,7 +92,7 @@ public:
 	* @return all neighbors of this node depending on the NeighborRule excluding Null Nodes
 	*/
 	UFUNCTION(BlueprintCallable)
-	TArray<UNavNode*> GetNeighbors();
+	TArray<ANavNode*> GetNeighbors();
 
 	friend class ANavGraph;
 };

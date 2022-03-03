@@ -11,26 +11,28 @@
  * 
  */
 UCLASS(BlueprintType)
-class NBNAVSYSTEM_API UNavGraphRow : public UObject
+class NBNAVSYSTEM_API ANavGraphRow : public AActor
 {
 	GENERATED_BODY()
 
 private:
 	UPROPERTY(EditAnywhere)
-		TArray<UNavNode*> posNodes;
+		TArray<ANavNode*> posNodes;
 	UPROPERTY(EditAnywhere)
-		TArray<UNavNode*> negNodes;
+		TArray<ANavNode*> negNodes;
 
 	int validNum;
 public:
 	
-	UNavNode* operator [](int i);
+	ANavNode* operator [](int i);
+
+	ANavGraphRow();
 
 	/*
 	* Sets the node at index [i] in this row. Adds null nodes if the graph is too small
 	*/
 	UFUNCTION(BlueprintCallable)
-	void Set(int i, UNavNode* node);
+	void Set(int i, ANavNode* node);
 
 	/*
 	* @return the number of nodes excluding nullptr
