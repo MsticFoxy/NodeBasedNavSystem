@@ -26,35 +26,35 @@ bool ANavNode::IsNull()
 
 int ANavNode::X()
 {
-    return x;
+    return h_x;
 }
 
 int ANavNode::Y()
 {
-    return y;
+    return h_y;
 }
 
 ANavGraph* ANavNode::Parent()
 {
-    return parent;
+    return h_parent;
 }
 
 void ANavNode::SetNeighborRule(FNeighborRule rule)
 {
-    neighborRule = rule;
+    h_neighborRule = rule;
 }
 
 FNeighborRule ANavNode::GetNeighborRule()
 {
-    return neighborRule;
+    return h_neighborRule;
 }
 
 TArray<ANavNode*> ANavNode::GetNeighbors()
 {
     TArray<ANavNode*> ret;
-    for (FNeighCoord c : neighborRule.reach)
+    for (FNeighCoord c : h_neighborRule.reach)
     {
-        if (ANavNode* n = (*(*parent)[(x + c.x)])[y + c.y])
+        if (ANavNode* n = h_parent->Get(h_x + c.x, h_y + c.y))
         {
             if (!n->IsNull())
             {
@@ -63,4 +63,16 @@ TArray<ANavNode*> ANavNode::GetNeighbors()
         }
     }
     return ret;
+}
+
+ANavNode* ANavNode::GetNeighbor(FNeighCoord direction)
+{
+    if (ANavNode* n = h_parent->Get(h_x + direction.x, h_y + direction.y))
+    {
+        if (!n->IsNull())
+        {
+            return n;
+        }
+    }
+    return nullptr;
 }

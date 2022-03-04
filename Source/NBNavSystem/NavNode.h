@@ -37,14 +37,19 @@ class NBNAVSYSTEM_API ANavNode : public AActor
 	GENERATED_BODY()
 private:
 	//static UNavNode* nullNode;
+	UPROPERTY(EditAnywhere)
 	bool isNullBool;
 
-	int x;
-	int y;
+	UPROPERTY(EditAnywhere)
+	int h_x;
+	UPROPERTY(EditAnywhere)
+	int h_y;
 
-	ANavGraph* parent;
+	UPROPERTY(EditAnywhere)
+	ANavGraph* h_parent;
 
-	FNeighborRule neighborRule;
+	UPROPERTY(EditAnywhere)
+	FNeighborRule h_neighborRule;
 public:
 
 	ANavNode();
@@ -93,6 +98,13 @@ public:
 	*/
 	UFUNCTION(BlueprintCallable)
 	TArray<ANavNode*> GetNeighbors();
+
+	/*
+	* @return one neighbor of this node depending on the given direction
+	* @param direction The direction of the neighbor node
+	*/
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	ANavNode* GetNeighbor(FNeighCoord direction);
 
 	friend class ANavGraph;
 };

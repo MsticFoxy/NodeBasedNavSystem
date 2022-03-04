@@ -3,7 +3,7 @@
 
 #include "NavGraphRow.h"
 
-ANavNode* ANavGraphRow::operator[](int i)
+/*ANavNode* ANavGraphRow::operator[](int i)
 {
 	if (i >= 0)
 	{
@@ -15,9 +15,31 @@ ANavNode* ANavGraphRow::operator[](int i)
 	}
 	else
 	{
-		if (negNodes.Num() >= -i)
+		int id = (-i) - 1;
+		if (negNodes.Num() > id)
 		{
-			return negNodes[(-i)-1];
+			return negNodes[id];
+		}
+		return nullptr;
+	}
+	return nullptr;
+}*/
+
+ANavNode* ANavGraphRow::Get(int i)
+{
+	if (i >= 0)
+	{
+		if (posNodes.Num() > i)
+		{
+			return posNodes[i];
+		}
+		return nullptr;
+	}
+	else
+	{
+		if (negNodes.Num() > (-i) - 1)
+		{
+			return negNodes[(-i) - 1];
 		}
 		return nullptr;
 	}
@@ -28,6 +50,8 @@ ANavGraphRow::ANavGraphRow()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
+	posNodes = TArray<ANavNode*>();
+	negNodes = TArray<ANavNode*>();
 }
 
 void ANavGraphRow::Set(int i, ANavNode* node)

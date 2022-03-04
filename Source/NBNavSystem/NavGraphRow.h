@@ -21,10 +21,18 @@ private:
 	UPROPERTY(EditAnywhere)
 		TArray<ANavNode*> negNodes;
 
+	UPROPERTY(EditAnywhere)
 	int validNum;
 public:
 	
-	ANavNode* operator [](int i);
+	//ANavNode* operator [](int i);
+
+	/*
+	* @return the node at the given indiex
+	* @param i the index of the node in this row
+	*/
+	UFUNCTION(BlueprintCallable)
+	ANavNode* Get(int i);
 
 	ANavGraphRow();
 

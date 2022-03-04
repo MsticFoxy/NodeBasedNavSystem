@@ -49,7 +49,15 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	ANavGraphRow* operator [](int i);
+	//ANavGraphRow* operator [](int i);
+
+	/*
+	* @return the node at the given indices
+	* @param x index in X direction
+	* @param y index in Y direction
+	*/
+	UFUNCTION(BlueprintCallable)
+	ANavNode* Get(int x, int y);
 
 	/* 
 	* Sets the node at index [x][y]. Adds null nodes if the graph is too small

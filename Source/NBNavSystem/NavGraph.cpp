@@ -25,7 +25,7 @@ void ANavGraph::Tick(float DeltaTime)
 
 }
 
-ANavGraphRow* ANavGraph::operator[](int i)
+/*ANavGraphRow* ANavGraph::operator[](int i)
 {
 	if (i >= 0)
 	{
@@ -44,13 +44,34 @@ ANavGraphRow* ANavGraph::operator[](int i)
 		return nullptr;
 	}
 	return nullptr;
+}*/
+
+ANavNode* ANavGraph::Get(int x, int y)
+{
+	if (x >= 0)
+	{
+		if (posRows.Num() > x)
+		{
+			return posRows[x]->Get(y);
+		}
+		return nullptr;
+	}
+	else
+	{
+		if (negRows.Num() >= -x)
+		{
+			return negRows[(-x) - 1]->Get(y);
+		}
+		return nullptr;
+	}
+	return nullptr;
 }
 
 void ANavGraph::Set(int x, int y, ANavNode* node)
 {
 	// setup for positive or negative array
 	TArray<ANavGraphRow*>* sign;
-	int space = 1;
+	int trueX = x;
 	if (x >= 0)
 	{
 		sign = &posRows;
@@ -59,7 +80,6 @@ void ANavGraph::Set(int x, int y, ANavNode* node)
 	{
 		sign = &negRows;
 		x = (-x) - 1;
-		space = -1;
 	}
 	// add rows if array is too short
 	if (sign->Num() <= x)
@@ -100,10 +120,10 @@ void ANavGraph::Set(int x, int y, ANavNode* node)
 	{
 		(*sign)[x]->Set(y, node);
 	}
-	node->x = x * space;
-	node->y = y;
-	node->parent = this;
-	node->SetActorLocation(FVector(x*100 * space, y*100,0));
+	node->h_x = trueX;
+	node->h_y = y;
+	node->h_parent = this;
+	node->SetActorLocation(FVector(trueX*100, y*100,0));
 	OnGraphChanged.Broadcast();
 }
 
